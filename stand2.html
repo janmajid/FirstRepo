@@ -22,9 +22,9 @@
         Loading 7-Day weather data...
     </div>
     <script>
-        // 7Timer Endpoint for the 7 Day Forecast, set to return JSON
+        // 7Timer Endpoint for the 7 Day Forecast, set to return xml
         // Longitude: 113.17, Latitude: 23.09 (Guangzhou, China example from documentation)
-        const API_ENDPOINT = 'https://www.7timer.info/bin/api.pl?lon=21.536802&lat=39.144303&product=civil&output=json';
+        const API_ENDPOINT = 'https://www.7timer.info/bin/api.pl?lon=21.536802&lat=39.144303&product=civil&output=xml';
         const container = document.getElementById('data-container');
 
         // Function to convert the 7Timer symbol code to a human-readable description
@@ -46,8 +46,8 @@
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                // Parse the response as JSON (required because of output=json)
-                const data = await response.json();
+                // Parse the response as xml (required because of output=xml)
+                const data = await response.text();
                 
                 // Check if the data is structured as expected
                 if (!data || !data.dataseries) {
