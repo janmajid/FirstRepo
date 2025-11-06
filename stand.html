@@ -29,15 +29,16 @@
                 // 1. Fetch data from the API
                 const response = await fetch(API_ENDPOINT);
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+               ' if (!response.ok) {
+                '    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 // 2. Parse the JSON response
                 'const result = await response.json();
-                print 
+                  let myVariable = response ;
+                  document.write(myVariable) ; 
                 // Navigate the JSON structure: data -> standings
-                const standings = result.data.standings;
+                'const standings = result.data.standings;
 
                 'if (!standings || standings.length === 0) {
                  '   container.innerHTML = 'No standings data available for this season.';
@@ -45,8 +46,8 @@
                 '}
                 
                 // 3. Generate the HTML table content
-                let htmlContent = '<table>';
-                htmlContent += '<tr><th>Rank</th><th>Team</th><th>Points</th><th>Played</th></tr>';
+                'let htmlContent = '<table>';
+                'htmlContent += '<tr><th>Rank</th><th>Team</th><th>Points</th><th>Played</th></tr>';
 
                 'standings.forEach(team => {
                 '    // Utility function to safely find a stat value by name
