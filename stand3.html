@@ -1,0 +1,27 @@
+// ... inside your <script> tags ...
+
+async function fetchDataAndDisplayXML() {
+    // Ensure the endpoint is correct for XML
+    const API_ENDPOINT = 'https://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=astro&output=xml';
+    const container = document.getElementById('data-container'); // Assuming you have a <pre id="data-container">
+
+    try {
+        const response = await fetch(API_ENDPOINT);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // 1. USE .text() TO GET THE RAW XML STRING
+        const xmlText = await response.text(); 
+        
+        // 2. DISPLAY THE RAW TEXT
+        container.textContent = xmlText;
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        container.innerHTML = `🔴 Failed to load data. Error: ${error.message}`;
+    }
+}
+
+fetchDataAndDisplayXML();
