@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <h1>⚽ Premier League 2021 Standings</h1>
+    <h1>⚽ Premier League 2022 Standings</h1>
 
 <script>
 const API_ENDPOINT = 'http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=astro&output=xml';
@@ -27,16 +27,18 @@ async function fetchDataWithTimeout() {
 
     // 2. Start a timer. If it completes before the fetch, it calls controller.abort()
     const timeoutId = setTimeout(() => {
+        document.write("timer set");
         controller.abort();
+        document.write("set complete");
     }, TIMEOUT_MS);
 
     try {
         container.textContent = `Fetching data (timeout set to ${TIMEOUT_MS / 1000} seconds)...`;
         
         // 3. Pass the signal object to the fetch call
-        document.write("Starting")
+        document.write("Starting");
         const response = await fetch(API_ENDPOINT, { signal });
-        document.write("Completed")
+        document.write("Completed");
         // IMPORTANT: Clear the timeout if the fetch succeeds before the timer ends
         clearTimeout(timeoutId);
 
