@@ -1,5 +1,58 @@
 <html> 
 <h1> This is my first page with GitHub Pages </h1>
 <p>Thanks GitHub!</p>
-[GET] https://api-football-standings.azharimm.site/leagues/eng.1/standings?season=2020&sort=asc  
+
+<body>
+    <h1>Premier League 2025 Standings</h1>
+    
+    <div id="standings-container">Loading standings...</div>
+    <script>
+    const apiEndpoint = 'https://api-football-standings.azharimm.site/leagues/eng.1/standings?season=2020&sort=asc';
+    const container = document.getElementById('standings-container');
+
+    // Asynchronous function to fetch data
+    async function fetchStandings() {
+        try {
+            // 1. Make the GET request
+            const response = await fetch(apiEndpoint);
+
+            // Check if the response was successful (status 200-299)
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // 2. Parse the JSON data
+            const data = await response.json();
+            
+            // Assuming the actual standings are nested inside `data.data.standings`
+            const standings = data.data.standings;
+
+            // 3. Process and display the data
+            let htmlContent = '<table>';
+            htmlContent += '<tr><th>Rank</th><th>Team</th><th>Points</th></tr>';
+
+            standings.forEach(team => {
+                htmlContent += `
+                    <tr>
+                        <td>${team.stats.find(s => s.name === 'rank').displayValue}</td>
+                        <td>${team.team.displayName}</td>
+                        <td>${team.stats.find(s => s.name === 'points').displayValue}</td>
+                    </tr>
+                `;
+            });
+            
+            htmlContent += '</table>';
+            container.innerHTML = htmlContent;
+
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            container.innerHTML = 'Error loading data. Check the console for details.';
+        }
+    }
+
+    // Call the function to start fetching the data when the page loads
+    fetchStandings();
+    </script>
+</body>  
+  
 </html>
