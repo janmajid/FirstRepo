@@ -23,8 +23,11 @@
         async function fetchData() {
             try {
                 // 1. Fetch the data
+                document.write("Starting Now")
                 const response = await fetch(API_ENDPOINT);
-
+                document.write("Completed Waiting")
+                document.write(response)
+                
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
