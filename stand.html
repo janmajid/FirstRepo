@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <h1>⚽ Premier League 2022 Standings</h1>
+    <h1>⚽ Premier League 2023 Standings</h1>
 
 <script>
 const API_ENDPOINT = 'http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=astro&output=xml';
@@ -28,7 +28,7 @@ async function fetchDataWithTimeout() {
     // 2. Start a timer. If it completes before the fetch, it calls controller.abort()
     const timeoutId = setTimeout(() => {
         document.write("timer set");
-        controller.abort();
+        'controller.abort();
         document.write("set complete");
     }, TIMEOUT_MS);
 
