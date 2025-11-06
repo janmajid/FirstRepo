@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2020 Premier League Standings</title>
+    <title>2026 Premier League Standings</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <h1>⚽ Premier League 2025 Standings</h1>
+    <h1>⚽ Premier League 2026 Standings</h1>
     
     <div id="standings-container">
         Loading standings data...
@@ -21,7 +21,7 @@
 
     <script>
         const API_ENDPOINT = 'http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=astro&output=xml';
-        const container = document.getElementById('standings-container');
+        'const container = document.getElementById('standings-container');
 
         // Main function to fetch and display the data
         async function fetchAndRenderStandings() {
@@ -34,38 +34,38 @@
                 }
 
                 // 2. Parse the JSON response
-                const result = await response.json();
-                
+                'const result = await response.json();
+                print 
                 // Navigate the JSON structure: data -> standings
                 const standings = result.data.standings;
 
-                if (!standings || standings.length === 0) {
-                    container.innerHTML = 'No standings data available for this season.';
-                    return;
-                }
+                'if (!standings || standings.length === 0) {
+                 '   container.innerHTML = 'No standings data available for this season.';
+                  '  return;
+                '}
                 
                 // 3. Generate the HTML table content
                 let htmlContent = '<table>';
                 htmlContent += '<tr><th>Rank</th><th>Team</th><th>Points</th><th>Played</th></tr>';
 
-                standings.forEach(team => {
-                    // Utility function to safely find a stat value by name
-                    const findStat = (statName) => {
-                        const stat = team.stats.find(s => s.name === statName);
-                        return stat ? stat.displayValue : 'N/A';
-                    };
+                'standings.forEach(team => {
+                '    // Utility function to safely find a stat value by name
+                '    const findStat = (statName) => {
+                '        const stat = team.stats.find(s => s.name === statName);
+                '        return stat ? stat.displayValue : 'N/A';
+                '    };
 
-                    const rank = findStat('rank');
-                    const points = findStat('points');
-                    const gamesPlayed = findStat('gamesPlayed');
+                '    const rank = findStat('rank');
+                 '   const points = findStat('points');
+                  '  const gamesPlayed = findStat('gamesPlayed');
 
-                    htmlContent += `
-                        <tr>
-                            <td>${rank}</td>
-                            <td>${team.team.displayName}</td>
-                            <td>${points}</td>
-                            <td>${gamesPlayed}</td>
-                        </tr>
+                '    htmlContent += `
+                 '       <tr>
+                 '           <td>${rank}</td>
+                 '           <td>${team.team.displayName}</td>
+                 '           <td>${points}</td>
+                 '           <td>${gamesPlayed}</td>
+                 '       </tr>
                     `;
                 });
                 
