@@ -13,12 +13,12 @@
 </head>
 <body>
 
-    <h1>⚽ Premier League 2020 Standings</h1>
+    <h1>⚽ Premier League 2021 Standings</h1>
 
 <script>
 const API_ENDPOINT = 'http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=astro&output=xml';
 const container = document.getElementById('data-container');
-const TIMEOUT_MS = 120000; // 2 minutes in milliseconds
+const TIMEOUT_MS = 30000; // 2 minutes in milliseconds
 
 async function fetchDataWithTimeout() {
     // 1. Create a new AbortController instance
@@ -34,8 +34,9 @@ async function fetchDataWithTimeout() {
         container.textContent = `Fetching data (timeout set to ${TIMEOUT_MS / 1000} seconds)...`;
         
         // 3. Pass the signal object to the fetch call
+        document.write("Starting")
         const response = await fetch(API_ENDPOINT, { signal });
-
+        document.write("Completed")
         // IMPORTANT: Clear the timeout if the fetch succeeds before the timer ends
         clearTimeout(timeoutId);
 
