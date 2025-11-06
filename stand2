@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7Timer Weather Forecast</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
+        .forecast-container { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
+        .day-card { border: 1px solid #ccc; padding: 15px; border-radius: 8px; width: 150px; text-align: center; background-color: white; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+        .day-card h3 { margin-top: 0; color: #333; }
+        .day-card p { margin: 5px 0; font-size: 0.9em; }
+        .day-card .temp { font-weight: bold; color: #d9534f; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+    <h1>7 Day Weather Forecast</h1>
+    <h2 id="location-display">Location: 113.17, 23.09</h2>
+    
+    <div id="data-container" class="forecast-container">
+        Loading 7-Day weather data...
+    </div>
+
+    <script>
+        // 7Timer Endpoint for the 7 Day Forecast, set to return JSON
+        // Longitude: 113.17, Latitude: 23.09 (Guangzhou, China example from documentation)
+        const API_ENDPOINT = 'http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=two&output=json';
+        const container = document.getElementById('data-container');
+
+        // Function to convert the 7Timer symbol code to a human-readable description
+        function getWeatherDescription(code) {
+            const descriptions = {
+                'clear': 'Clear Sky ☀️', 'mcloudy': 'Mostly Cloudy 🌥️', 'cloudy': 'Cloudy ☁️',
+                'pcloudy': 'Partly Cloudy 🌤️', 'humid': 'Humid 💧', 'lightrain': 'Light Rain 🌧️',
+                'oshower': 'Occasional Showers ☔', 'rain': 'Rain 🌧️', 'snow': 'Snow ❄️',
+                'ts': 'Thunderstorm ⛈️', 'tsrain': 'Thunderstorm with Rain ⚡', 'fog': 'Fog 🌫️',
+            };
+            return descriptions[code] || code;
+        }
+
+        async function fetchDataAndDisplay() {
+            try {
+                const response = await fetch(API_ENDPOINT);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                // Parse the response as JSON (required because of output=json)
+                const data = await response.json();
+                
+                // Check if the data is structured as expected
+                if (!data || !data.dataseries) {
+                    throw new Error("Invalid data structure received from API.");
+                }
+
+                let htmlContent = '';
+                
+                // The dataseries array contains the forecast for each time slot/day
+                data.dataseries.forEach(forecast => {
+                    // Extract the date from the init string (e.g., "2023120100" -> Dec 1)
+                    const dateStr = String(data.init).substring(0, 8);
+                    const forecastTime = new Date(
+                        dateStr.substring(0, 4), 
+                        parseInt(dateStr.substring(4, 6)) - 1, 
+                        dateStr.substring(6, 8)
+                    );
+                    forecastTime.setDate(forecastTime.getDate() + forecast.day); // Add day offset
+
+                    // The 'temp2m' is often the temperature at 2 meters
+                    const temp = forecast.temp2m || 'N/A';
+                    const weather = getWeatherDescription(forecast.weather);
+
+                    htmlContent += `
+                        <div class="day-card">
+                            <h3>${forecastTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</h3>
+                            <p>${weather}</p>
+                            <p>Temp: <span class="temp">${temp}°C</span></p>
+                            <p>Wind: ${forecast.wind10m.speed}m/s</p>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = htmlContent;
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                container.innerHTML = `🔴 Failed to load data. Please check the console and ensure the API host is reachable. Error: ${error.message}`;
+            }
+        }
+
+        // Run the function to display the weather data
+        fetchDataAndDisplay();
+    </script>
+</body>
+</html>
